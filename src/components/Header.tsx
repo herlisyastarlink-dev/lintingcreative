@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useStore } from '@/store';
-import { LogOut, User as UserIcon, Settings, Zap, UserCircle2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { LogOut, User as UserIcon, Zap, UserCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 export function Header() {
@@ -12,36 +12,43 @@ export function Header() {
   if (!currentUser) return null;
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/20 bg-white/60 backdrop-blur-xl shadow-sm">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6">
-        <div className="flex items-center gap-2">
+    <header className="sticky top-0 z-40 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-900/20">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6 max-w-md mx-auto">
+        <div className="flex items-center gap-3">
           {currentUser.role === 'reseller' && currentUser.logoUrl ? (
-            <img src={currentUser.logoUrl} alt="Logo" className="h-8 w-8 rounded-xl object-cover shadow-sm" />
+            <img src={currentUser.logoUrl} alt="Logo" className="h-10 w-auto object-contain" />
+          ) : settings?.logoUrl ? (
+            <img src={settings.logoUrl} alt="App Logo" className="h-10 w-auto object-contain" />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-sm shadow-blue-500/30">
-              <Zap className="h-4 w-4" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/20 text-white shadow-sm backdrop-blur-sm">
+              <Zap className="h-5 w-5" />
             </div>
           )}
-          <span className="font-semibold text-slate-800 tracking-tight">
-            {currentUser.role === 'reseller' && currentUser.wifiName ? currentUser.wifiName : (settings.businessName || 'LINTING CREATIVE')}
-          </span>
+          <div className="flex flex-col">
+            <span className="font-bold text-white tracking-tight leading-tight">
+              {currentUser.role === 'reseller' && currentUser.wifiName ? currentUser.wifiName : (settings?.businessName || 'LINTING CREATIVE')}
+            </span>
+            <span className="text-[10px] font-medium text-blue-100 uppercase tracking-wider">
+              {currentUser.role === 'operator' ? 'Operator Panel' : 'Reseller Panel'}
+            </span>
+          </div>
         </div>
 
         <div className="relative">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 border-2 border-white shadow-sm hover:ring-2 hover:ring-blue-500/50 transition-all focus:outline-none overflow-hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 border-2 border-white/30 shadow-sm hover:bg-white/30 transition-all focus:outline-none overflow-hidden backdrop-blur-sm"
           >
             {currentUser.photoUrl ? (
               <img src={currentUser.photoUrl} alt={currentUser.name} className="h-full w-full object-cover" />
             ) : (
-              <UserIcon className="h-5 w-5 text-slate-600" />
+              <UserIcon className="h-5 w-5 text-white" />
             )}
           </button>
 
           <AnimatePresence>
             {isMenuOpen && (
-              <>
+              <div className="absolute right-0 top-12 z-50">
                 <div
                   className="fixed inset-0 z-40"
                   onClick={() => setIsMenuOpen(false)}
@@ -50,7 +57,7 @@ export function Header() {
                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  className="absolute right-0 top-12 z-50 mt-2 w-56 origin-top-right rounded-2xl bg-white/90 backdrop-blur-xl p-2 shadow-xl border border-white/20 ring-1 ring-black/5"
+                  className="relative z-50 mt-2 w-56 origin-top-right rounded-2xl bg-white/90 backdrop-blur-xl p-2 shadow-xl border border-white/20 ring-1 ring-black/5"
                 >
                   <div className="px-3 py-2 border-b border-slate-100 mb-2">
                     <p className="text-sm font-medium text-slate-900 truncate">{currentUser.name}</p>
@@ -83,7 +90,7 @@ export function Header() {
                     Keluar
                   </button>
                 </motion.div>
-              </>
+              </div>
             )}
           </AnimatePresence>
         </div>

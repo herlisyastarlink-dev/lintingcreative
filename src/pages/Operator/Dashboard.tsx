@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/Card';
 import { useStore } from '@/store';
 import {
@@ -64,26 +64,28 @@ export function OperatorDashboard() {
         animate={{ opacity: 1, y: 0 }}
         className="grid grid-cols-2 gap-4"
       >
-        <Card className="bg-gradient-to-br from-blue-600 to-blue-500 text-white border-none shadow-lg shadow-blue-500/30">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-blue-100 mb-2">
+        <Card className="bg-slate-900/90 backdrop-blur-xl text-white border-none shadow-xl shadow-slate-900/20">
+          <CardContent className="p-5 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-bl-full -mr-4 -mt-4"></div>
+            <div className="flex items-center gap-2 text-slate-400 mb-3 relative z-10">
               <TrendingUp className="h-4 w-4" />
-              <span className="text-xs font-medium uppercase tracking-wider">Total Omzet</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Total Omzet</span>
             </div>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-extrabold tracking-tight relative z-10">
               Rp {totalOmzet.toLocaleString('id-ID')}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/80 backdrop-blur-xl border-white/50">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-slate-500 mb-2">
+        <Card className="bg-white/80 backdrop-blur-xl border-white/50 shadow-lg shadow-slate-200/50">
+          <CardContent className="p-5 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-blue-50 rounded-bl-full -mr-4 -mt-4"></div>
+            <div className="flex items-center gap-2 text-slate-400 mb-3 relative z-10">
               <CreditCard className="h-4 w-4" />
-              <span className="text-xs font-medium uppercase tracking-wider">Voucher Aktif</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Voucher Aktif</span>
             </div>
-            <div className="text-2xl font-bold text-slate-800">
-              {availableVouchers} <span className="text-sm font-normal text-slate-400">/ {totalVouchers}</span>
+            <div className="text-2xl font-extrabold tracking-tight text-slate-900 relative z-10">
+              {availableVouchers} <span className="text-sm font-medium text-slate-400">/ {totalVouchers}</span>
             </div>
           </CardContent>
         </Card>
@@ -94,16 +96,19 @@ export function OperatorDashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <h2 className="text-lg font-semibold text-slate-800 mb-4 px-1">Menu Utama</h2>
+        <h2 className="text-lg font-bold text-slate-900 mb-4 px-1 flex items-center gap-2">
+          <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
+          Menu Utama
+        </h2>
         <div className="grid grid-cols-2 gap-4">
           {menuItems.map((item, index) => (
             <Link key={item.title} to={item.to}>
-              <Card hoverable className="h-full bg-white/60 border-white/40">
-                <CardContent className="p-5 flex flex-col items-center justify-center text-center gap-3">
-                  <div className={`p-3 rounded-2xl ${item.bg} ${item.color}`}>
+              <Card hoverable className="h-full bg-white/80 backdrop-blur-xl border-white/50 shadow-sm hover:shadow-md transition-all group">
+                <CardContent className="p-5 flex flex-col items-start gap-4">
+                  <div className={`p-3 rounded-2xl ${item.bg} ${item.color} shadow-sm group-hover:scale-110 transition-transform duration-300`}>
                     <item.icon className="h-6 w-6" />
                   </div>
-                  <span className="text-sm font-medium text-slate-700 leading-tight">
+                  <span className="text-sm font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">
                     {item.title}
                   </span>
                 </CardContent>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -61,7 +61,7 @@ export function OperatorManagementCetak() {
         voucherWidthMm: 76,
         voucherHeightMm: 46,
         cssText: `:root {\n  --paper-w-mm: 80;\n  --paper-h-mm: 50;\n  --margin-mm: 2;\n  --gap-x-mm: 0;\n  --gap-y-mm: 0;\n  --voucher-w-mm: 76;\n  --voucher-h-mm: 46;\n  --cols: 1;\n  --rows: 1;\n}\n${DEFAULT_TEMPLATE_CSS}`,
-        isActive: false,
+        isActive: true,
       } as any);
     }
 
@@ -83,7 +83,7 @@ export function OperatorManagementCetak() {
         voucherWidthMm: 54,
         voucherHeightMm: 36,
         cssText: `:root {\n  --paper-w-mm: 58;\n  --paper-h-mm: 40;\n  --margin-mm: 2;\n  --gap-x-mm: 0;\n  --gap-y-mm: 0;\n  --voucher-w-mm: 54;\n  --voucher-h-mm: 36;\n  --cols: 1;\n  --rows: 1;\n}\n${DEFAULT_TEMPLATE_CSS}`,
-        isActive: false,
+        isActive: true,
       } as any);
     }
   }, [printTemplates, addPrintTemplate]);
@@ -337,9 +337,9 @@ ${DEFAULT_TEMPLATE_CSS}`;
         isOpen={isTemplateModalOpen}
         onClose={() => setIsTemplateModalOpen(false)}
         title={selectedTemplate ? `Edit Template: ${selectedTemplate.name}` : 'Tambah Template Baru'}
-        className="max-w-3xl"
+        className="max-w-6xl h-[90vh]"
       >
-        <div className="flex flex-col h-[70vh]">
+        <div className="flex flex-col h-full max-h-[calc(90vh-100px)]">
           <div className="flex border-b border-slate-200 mb-4">
             <button
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'param' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
@@ -351,19 +351,13 @@ ${DEFAULT_TEMPLATE_CSS}`;
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'css' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
               onClick={() => setTab('css')}
             >
-              CSS Editor
-            </button>
-            <button
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'preview' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
-              onClick={() => setTab('preview')}
-            >
-              Preview
+              CSS & Live Preview
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto pr-2">
+          <div className="flex-1 overflow-hidden">
             {tab === 'param' && (
-              <div className="space-y-4">
+              <div className="h-full overflow-y-auto pr-2 space-y-4">
                 <Input
                   label="Nama Template"
                   placeholder="Contoh: F4 Landscape 5x6"
@@ -491,24 +485,30 @@ ${DEFAULT_TEMPLATE_CSS}`;
             )}
 
             {tab === 'css' && (
-              <div className="h-full flex flex-col">
-                <p className="text-xs text-slate-500 mb-2">Gunakan variabel CSS: --paper-w-mm, --voucher-w-mm, dll.</p>
-                <textarea
-                  className="flex-1 w-full rounded-xl border border-slate-200 bg-slate-50 p-4 font-mono text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 resize-none"
-                  value={tplCss}
-                  onChange={(e) => setTplCss(e.target.value)}
-                  placeholder="Masukkan CSS kustom di sini..."
-                />
-              </div>
-            )}
-
-            {tab === 'preview' && (
-              <div className="h-full bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
-                <iframe
-                  srcDoc={getPreviewHtml()}
-                  className="w-full h-full border-0"
-                  title="Preview"
-                />
+              <div className="h-full flex flex-col lg:flex-row gap-4">
+                <div className="flex-1 flex flex-col h-full">
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="text-xs text-slate-500 font-bold uppercase">CSS Editor</p>
+                    <p className="text-[10px] text-slate-400">Gunakan var: --paper-w-mm, --voucher-w-mm</p>
+                  </div>
+                  <textarea
+                    className="flex-1 w-full rounded-xl border border-slate-200 bg-slate-900 text-slate-50 p-4 font-mono text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 resize-none leading-relaxed"
+                    value={tplCss}
+                    onChange={(e) => setTplCss(e.target.value)}
+                    placeholder="/* Masukkan CSS kustom di sini */"
+                    spellCheck={false}
+                  />
+                </div>
+                <div className="flex-1 flex flex-col h-full bg-slate-100 rounded-xl overflow-hidden border border-slate-200 relative">
+                  <div className="absolute top-2 right-2 z-10 bg-white/80 backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-slate-500 border border-slate-200">
+                    Live Preview
+                  </div>
+                  <iframe
+                    srcDoc={getPreviewHtml()}
+                    className="w-full h-full border-0"
+                    title="Preview"
+                  />
+                </div>
               </div>
             )}
           </div>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -33,11 +33,11 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
                 className
               )}
             >
-              <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-                <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
+              <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+                <h2 className="text-lg font-bold text-slate-900">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors bg-slate-50"
                 >
                   <X className="h-5 w-5" />
                 </button>

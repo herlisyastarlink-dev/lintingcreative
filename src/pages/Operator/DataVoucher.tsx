@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/Card';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';

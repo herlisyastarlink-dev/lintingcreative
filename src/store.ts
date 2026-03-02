@@ -91,6 +91,7 @@ export interface Settings {
   ssid: string;
   businessName: string;
   location: string;
+  logoUrl?: string;
   templateMappings: TemplateMapping[];
 }
 
@@ -122,7 +123,7 @@ interface AppState {
   deletePrintTemplate: (id: string) => void;
   
   printVouchers: (resellerId: string, price: number, period: string, group: string, qty: number, isThermal: boolean, batchId?: string) => { vouchers: Voucher[]; transactionId?: string };
-  printBatch: (resellerId: string, batchId: string, isThermal: boolean) => { vouchers: Voucher[]; transactionId?: string };
+  printBatch: (resellerId: string, batchId: string, isThermal: boolean, priceFilter?: number) => { vouchers: Voucher[]; transactionId?: string };
   rollbackPrint: (transactionId: string) => void;
   rollbackPrintCount: (voucherIds: string[]) => void;
   commitPrint: (transactionId: string) => void;
@@ -151,6 +152,7 @@ export const useStore = create<AppState>()(
         ssid: '',
         businessName: '',
         location: '',
+        logoUrl: '',
         templateMappings: [
           { price: 2000, color: 'bg-blue-100', accent: 'text-blue-700' },
           { price: 5000, color: 'bg-emerald-100', accent: 'text-emerald-700' },
@@ -198,7 +200,7 @@ export const useStore = create<AppState>()(
           cssText: `:root {\n  --paper-w-mm: 80;\n  --paper-h-mm: 50;\n  --margin-mm: 2;\n  --gap-x-mm: 0;\n  --gap-y-mm: 0;\n  --voucher-w-mm: 76;\n  --voucher-h-mm: 46;\n  --cols: 1;\n  --rows: 1;\n}\n${DEFAULT_TEMPLATE_CSS}`,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          isActive: false,
+          isActive: true,
         },
         {
           id: 'tpl-default-thermal-58',
@@ -219,8 +221,8 @@ export const useStore = create<AppState>()(
           cssText: `:root {\n  --paper-w-mm: 58;\n  --paper-h-mm: 40;\n  --margin-mm: 2;\n  --gap-x-mm: 0;\n  --gap-y-mm: 0;\n  --voucher-w-mm: 54;\n  --voucher-h-mm: 36;\n  --cols: 1;\n  --rows: 1;\n}\n${DEFAULT_TEMPLATE_CSS}`,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          isActive: false,
-        }
+          isActive: true,
+        },
       ],
 
       login: (username, password) => {
@@ -370,13 +372,14 @@ export const useStore = create<AppState>()(
         }
       },
 
-      printBatch: (resellerId, batchId, isThermal) => {
+      printBatch: (resellerId, batchId, isThermal, priceFilter) => {
         const state = get();
         const availableVouchers = state.vouchers.filter(
           (v) =>
             v.resellerId === resellerId &&
             String(v.batchId) === String(batchId) &&
-            v.status === 'available'
+            v.status === 'available' &&
+            (priceFilter === undefined || Number(v.price) === Number(priceFilter))
         );
 
         if (availableVouchers.length === 0) {

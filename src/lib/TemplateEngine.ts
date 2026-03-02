@@ -55,31 +55,58 @@ export const DEFAULT_TEMPLATE_CSS = `/* CSS Variabel akan di-inject secara dinam
   overflow: hidden;
 }
 
-/* Modern Voucher Design */
+/* Modern Minimalist Voucher Design */
+.voucher {
+  width: calc(var(--voucher-w-mm) * 1mm);
+  height: calc(var(--voucher-h-mm) * 1mm);
+  box-sizing: border-box;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 4mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.voucher::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4mm;
+  height: 100%;
+  background: #0f172a;
+}
+
 .voucher-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 2mm;
-  margin-bottom: 2mm;
+  align-items: flex-start;
+  padding-left: 2mm;
 }
 
 .voucher-brand {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 10pt;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 9pt;
   color: #0f172a;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
 }
 
 .voucher-price {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-weight: 600;
-  font-size: 8pt;
-  color: #2563eb;
-  background: #eff6ff;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 10pt;
+  color: #0f172a;
+  background: #f8fafc;
   padding: 1mm 2mm;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
 }
 
 .voucher-body {
@@ -88,31 +115,38 @@ export const DEFAULT_TEMPLATE_CSS = `/* CSS Variabel akan di-inject secara dinam
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-left: 2mm;
 }
 
 .voucher-code {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14pt;
+  font-size: 16pt;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #0f172a;
 }
 
 .voucher-period {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 8pt;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 7pt;
+  font-weight: 600;
   color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   margin-top: 1mm;
+  background: #f1f5f9;
+  padding: 0.5mm 2mm;
+  border-radius: 4px;
 }
 
 .voucher-footer {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 6pt;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 5pt;
+  font-weight: 600;
   color: #94a3b8;
-  text-align: center;
-  border-top: 1px dashed #e2e8f0;
-  padding-top: 2mm;
-  margin-top: 2mm;
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Crop marks (L shape at corners) */

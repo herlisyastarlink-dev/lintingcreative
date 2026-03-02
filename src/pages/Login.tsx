@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Card, CardContent } from '@/components/Card';
@@ -37,65 +37,99 @@ export function Login() {
   }, [currentUser, navigate]);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-300/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-pink-300/20 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-slate-900">
+      {/* Modern Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"></div>
+      <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className="w-full max-w-md z-10"
       >
-        <div className="mb-8 flex flex-col items-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 shadow-lg shadow-blue-500/30">
-            <Zap className="h-8 w-8 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">{settings.businessName || 'Linting Creative'}</h1>
-          <p className="text-sm text-slate-500">Silakan masuk ke akun Anda</p>
+        <div className="mb-8 flex flex-col items-center text-center">
+          {settings?.logoUrl ? (
+            <div className="relative mb-6">
+              <img 
+                src={settings.logoUrl} 
+                alt="App Logo" 
+                className="relative h-24 w-auto object-contain" 
+              />
+            </div>
+          ) : (
+            <div className="relative mb-6">
+              <div className="relative flex h-24 w-24 items-center justify-center rounded-[1.5rem] bg-white/10 shadow-xl border border-white/10 backdrop-blur-md">
+                <Zap className="h-10 w-10 text-white" />
+              </div>
+            </div>
+          )}
+          <h1 className="text-3xl font-extrabold tracking-tight text-white mb-2">
+            {settings?.businessName || 'Linting Creative'}
+          </h1>
+          <p className="text-blue-200 font-medium">Masuk untuk mengelola voucher Anda</p>
         </div>
 
-        <Card className="bg-white/80 backdrop-blur-xl border-white/50 shadow-2xl shadow-blue-900/5">
-          <CardContent className="p-6">
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="relative">
-                <Input
-                  label="Username"
-                  placeholder="Masukkan username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="pl-10"
-                />
-                <UserCircle2 className="absolute left-3 top-9 h-5 w-5 text-slate-400" />
+        <Card className="bg-white/10 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20">
+          <CardContent className="p-8">
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-blue-100 ml-1">Username</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <UserCircle2 className="h-5 w-5 text-blue-300 group-focus-within:text-blue-400 transition-colors" />
+                  </div>
+                  <Input
+                    placeholder="Masukkan username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="pl-11 bg-black/20 border-white/10 text-white placeholder:text-white/30 focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-200"
+                  />
+                </div>
               </div>
-              <div className="relative">
-                <Input
-                  label="Password"
-                  type="password"
-                  placeholder="Masukkan password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                />
-                <KeyRound className="absolute left-3 top-9 h-5 w-5 text-slate-400" />
+              
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-blue-100 ml-1">Password</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <KeyRound className="h-5 w-5 text-blue-300 group-focus-within:text-blue-400 transition-colors" />
+                  </div>
+                  <Input
+                    type="password"
+                    placeholder="Masukkan password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-11 bg-black/20 border-white/10 text-white placeholder:text-white/30 focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-200"
+                  />
+                </div>
               </div>
 
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-xl bg-red-50 p-3 text-sm text-red-600 border border-red-100"
+                  className="rounded-xl bg-red-500/10 backdrop-blur-sm p-4 text-sm font-medium text-red-200 border border-red-500/20 flex items-center gap-2"
                 >
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400"></div>
                   {error}
                 </motion.div>
               )}
 
-              <Button type="submit" className="w-full mt-2" size="lg">
-                Masuk
+              <Button 
+                type="submit" 
+                className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 border-0" 
+                size="lg"
+              >
+                Masuk ke Dashboard
               </Button>
             </form>
           </CardContent>
         </Card>
+        
+        <p className="mt-8 text-center text-xs font-medium text-blue-300/60 uppercase tracking-widest">
+          &copy; {new Date().getFullYear()} PT. Anugerah Waspoint Network
+        </p>
       </motion.div>
     </div>
   );

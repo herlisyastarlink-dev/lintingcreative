@@ -1,5 +1,5 @@
 export interface TemplateParams {
-  paperPreset: 'A4' | 'F4' | 'CUSTOM';
+  paperPreset: 'A4' | 'F4' | 'THERMAL80' | 'THERMAL58' | 'CUSTOM';
   customWidth?: number;
   customHeight?: number;
   orientation: 'portrait' | 'landscape';
@@ -34,12 +34,18 @@ export function calculateTemplate(params: TemplateParams): CalculationResult {
   } else if (params.paperPreset === 'F4') {
     w = 215;
     h = 330;
+  } else if (params.paperPreset === 'THERMAL80') {
+    w = 80;
+    h = 297; // Panjang roll tak terbatas, set default panjang
+  } else if (params.paperPreset === 'THERMAL58') {
+    w = 58;
+    h = 297; // Panjang roll tak terbatas
   } else {
     w = params.customWidth || 210;
     h = params.customHeight || 297;
   }
 
-  if (params.orientation === 'landscape') {
+  if (params.orientation === 'landscape' && !params.paperPreset.startsWith('THERMAL')) {
     const temp = w;
     w = h;
     h = temp;

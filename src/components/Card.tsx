@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 export const Card = React.forwardRef<
   HTMLDivElement,
@@ -10,8 +10,8 @@ export const Card = React.forwardRef<
     ref={ref}
     whileHover={hoverable ? { y: -2, scale: 1.01 } : undefined}
     className={cn(
-      'rounded-2xl border border-white/20 bg-white/70 backdrop-blur-md shadow-sm shadow-blue-900/5 text-slate-900',
-      hoverable && 'cursor-pointer hover:shadow-md hover:shadow-blue-900/10 transition-shadow',
+      'rounded-3xl border border-slate-100/50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-slate-900',
+      hoverable && 'cursor-pointer hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300',
       className
     )}
     {...props}

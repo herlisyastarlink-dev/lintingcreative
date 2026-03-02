@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -39,6 +39,18 @@ export function OperatorPengaturan() {
       try {
         const base64 = await fileToBase64(file);
         setOpPhoto(base64);
+      } catch (error) {
+        console.error('Failed to convert image', error);
+      }
+    }
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const base64 = await fileToBase64(file);
+        setFormData({ ...formData, logoUrl: base64 });
       } catch (error) {
         console.error('Failed to convert image', error);
       }
@@ -142,6 +154,47 @@ export function OperatorPengaturan() {
               <div>
                 <h3 className="font-semibold text-slate-900">Informasi Usaha</h3>
                 <p className="text-xs text-slate-500">Tampil pada struk dan halaman login</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">Logo Aplikasi</label>
+              <div className="flex items-center gap-4">
+                {formData.logoUrl ? (
+                  <img src={formData.logoUrl} alt="App Logo" className="w-16 h-16 rounded-2xl object-cover border border-slate-200 shadow-sm" />
+                ) : (
+                  <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200 text-slate-400 shadow-inner">
+                    <Settings className="w-8 h-8" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="file"
+                      id="app-logo-upload"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleLogoUpload}
+                    />
+                    <label
+                      htmlFor="app-logo-upload"
+                      className="cursor-pointer flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm transition-colors"
+                    >
+                      <Upload className="w-4 h-4" />
+                      Upload Logo
+                    </label>
+                    {formData.logoUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, logoUrl: '' })}
+                        className="text-xs text-red-500 hover:text-red-700 px-2"
+                      >
+                        Hapus
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1">Format: PNG, JPG. Max 1MB. Disarankan rasio 1:1.</p>
+                </div>
               </div>
             </div>
 
